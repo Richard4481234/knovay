@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knovay — Interactive learning in math & science</title>
+<meta name="description" content="Knovay builds interactive tools for learning math and science — home of GeoProof (geometry explorers) and Physica (an interactive physics lab).">
+<meta name="theme-color" content="#0d0f15">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Knovay">
+<meta property="og:title" content="Knovay — Interactive learning in math & science">
+<meta property="og:description" content="Home of GeoProof and Physica — interactive tools that let you play with the ideas behind math and physics.">
+<meta property="og:url" content="https://knovay.com/">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  :root{
+    --bg:#0d0f15; --panel:#161923; --line:#242938; --text:#eceef4; --muted:#9aa2b4;
+    --geo:#3b8ff0; --geo-soft:rgba(59,143,240,0.14);
+    --phys:#a774f4; --phys-soft:rgba(167,116,244,0.14);
+  }
+  html,body{background:var(--bg);color:var(--text);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;}
+  body{min-height:100vh;
+    background:
+      radial-gradient(1100px 620px at 50% -10%, rgba(72,96,180,0.18), transparent 60%),
+      radial-gradient(760px 520px at 85% 15%, rgba(167,116,244,0.10), transparent 55%),
+      var(--bg);
+    display:flex;flex-direction:column;align-items:center;padding:0 20px;}
+  .wrap{width:100%;max-width:960px;}
+
+  header.top{display:flex;align-items:center;justify-content:space-between;padding:26px 2px;}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px;letter-spacing:-0.02em;}
+  .brand .mark{width:26px;height:26px;flex:none;}
+  .top nav{display:flex;gap:22px;font-size:14px;}
+  .top nav a{color:var(--muted);text-decoration:none;font-weight:500;transition:color .15s;}
+  .top nav a:hover{color:var(--text);}
+
+  .hero{text-align:center;padding:60px 10px 46px;}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#8b93de;}
+  h1{font-size:clamp(42px,7vw,68px);font-weight:850;letter-spacing:-0.035em;line-height:1.02;margin:16px 0 0;
+     background:linear-gradient(180deg,#ffffff,#c7ccdb);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .lede{font-size:clamp(16px,2.4vw,20px);color:var(--muted);max-width:600px;margin:20px auto 0;line-height:1.55;}
+
+  .products{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:8px 0 20px;}
+  .card{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:28px 26px 26px;
+    text-decoration:none;color:inherit;display:flex;flex-direction:column;
+    transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;overflow:hidden;}
+  .card::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;opacity:.9;}
+  .card.geo::before{background:linear-gradient(90deg,var(--geo),transparent);}
+  .card.phys::before{background:linear-gradient(90deg,var(--phys),transparent);}
+  .card:hover{transform:translateY(-4px);}
+  .card.geo:hover{border-color:rgba(59,143,240,0.55);box-shadow:0 18px 44px -18px rgba(59,143,240,0.55);}
+  .card.phys:hover{border-color:rgba(167,116,244,0.55);box-shadow:0 18px 44px -18px rgba(167,116,244,0.55);}
+
+  .icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
+  .card.geo .icon{background:var(--geo-soft);}
+  .card.phys .icon{background:var(--phys-soft);}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+  .card.geo .kicker{color:var(--geo);}
+  .card.phys .kicker{color:var(--phys);}
+  .card h2{font-size:27px;font-weight:800;letter-spacing:-0.02em;margin:6px 0 10px;}
+  .card p{color:var(--muted);font-size:14.5px;line-height:1.6;flex:1;}
+  .stats{display:flex;gap:16px;margin:18px 0 20px;flex-wrap:wrap;}
+  .stats .s{font-size:12.5px;color:#c3c8d6;}
+  .stats .s b{display:block;font-size:19px;font-weight:800;color:var(--text);letter-spacing:-0.01em;}
+  .go{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;font-weight:700;font-size:14.5px;
+    padding:11px 18px;border-radius:999px;color:#0d0f15;transition:gap .15s ease;}
+  .card.geo .go{background:var(--geo);}
+  .card.phys .go{background:var(--phys);}
+  .card:hover .go{gap:12px;}
+
+  footer{color:#6b7284;font-size:13px;text-align:center;padding:34px 0 44px;line-height:1.7;}
+  footer a{color:#8b93de;text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+
+  @media(max-width:680px){
+    .products{grid-template-columns:1fr;}
+    .top nav{display:none;}
+    .hero{padding:40px 6px 32px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="29" height="29" rx="8" stroke="#8b93de" stroke-width="1.6"/>
+        <path d="M9 22 L16 9 L23 22" stroke="#3b8ff0" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="16" cy="16" r="3.1" fill="#a774f4"/>
+      </svg>
+      <span>Knovay</span>
+    </div>
+    <nav>
+      <a href="https://geoproof.knovay.com/">GeoProof</a>
+      <a href="https://physica.knovay.com/">Physica</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">Educational platform</div>
+    <h1>Learn by playing<br>with the ideas.</h1>
+    <p class="lede">Knovay builds interactive tools for math and science — where you don't just read a concept, you drag it, tune it, and watch it hold true. Two labs, one home.</p>
+  </section>
+
+  <section class="products">
+
+    <a class="card geo" href="https://geoproof.knovay.com/">
+      <div class="icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 20 L20 20 L4 7 Z" stroke="#3b8ff0" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="4" cy="20" r="1.7" fill="#3b8ff0"/><circle cx="20" cy="20" r="1.7" fill="#3b8ff0"/><circle cx="4" cy="7" r="1.7" fill="#3b8ff0"/>
+        </svg>
+      </div>
+      <div class="kicker">Interactive Geometry</div>
+      <h2>GeoProof</h2>
+      <p>Drag the figure and watch each classic theorem stay true — turning a static proof into something you can play with. Every construction is verified to machine precision.</p>
+      <div class="stats">
+        <div class="s"><b>73</b>explorers</div>
+        <div class="s"><b>625</b>quiz questions</div>
+        <div class="s"><b id="geoVisits">&hellip;</b>visits</div>
+      </div>
+      <span class="go">Open GeoProof →</span>
+    </a>
+
+    <a class="card phys" href="https://physica.knovay.com/">
+      <div class="icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="2.3" fill="#a774f4"/>
+          <ellipse cx="12" cy="12" rx="10" ry="4.2" stroke="#a774f4" stroke-width="1.8"/>
+          <ellipse cx="12" cy="12" rx="10" ry="4.2" stroke="#a774f4" stroke-width="1.8" transform="rotate(60 12 12)"/>
+          <ellipse cx="12" cy="12" rx="10" ry="4.2" stroke="#a774f4" stroke-width="1.8" transform="rotate(120 12 12)"/>
+        </svg>
+      </div>
+      <div class="kicker">Interactive Physics Lab</div>
+      <h2>Physica</h2>
+      <p>Explore physics field by field. Step into an experiment, launch it, tune the numbers, and watch the laws of nature play out in real time — from projectiles to quantum atoms.</p>
+      <div class="stats">
+        <div class="s"><b>6</b>fields</div>
+        <div class="s"><b>67</b>experiments</div>
+        <div class="s"><b id="physVisits">&hellip;</b>visits</div>
+      </div>
+      <span class="go">Open Physica →</span>
+    </a>
+
+  </section>
+
+  <footer>
+    Knovay — interactive tools for learning math &amp; science.<br>
+    &copy; 2026 Knovay · <a href="https://geoproof.knovay.com/">GeoProof</a> · <a href="https://physica.knovay.com/">Physica</a>
+  </footer>
+
+</div>
+
+<!-- Live visit counts, read straight from each product's own Firestore (read-only:
+     viewing this page never adds to either product's count). -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  var GEO = { apiKey:"AIzaSyB2YooHATeNcu_3lYzL7vOjTwpDDlP6I1U", authDomain:"geoproof-a2db0.firebaseapp.com",
+    projectId:"geoproof-a2db0", storageBucket:"geoproof-a2db0.firebasestorage.app",
+    messagingSenderId:"504119803431", appId:"1:504119803431:web:87f82a578f16367801d802" };
+  var PHYS = { apiKey:"AIzaSyDqdhi8AAnjNyOR0sWkdr5_fC1_wmy4F-o", authDomain:"physica-69f62.firebaseapp.com",
+    projectId:"physica-69f62", storageBucket:"physica-69f62.firebasestorage.app",
+    messagingSenderId:"335856818743", appId:"1:335856818743:web:6979546a0e3cbb60aabdb2" };
+
+  function live(cfg, name, field, elId){
+    try {
+      var db = getFirestore(initializeApp(cfg, name));
+      onSnapshot(doc(db, "stats", "site"), function(snap){
+        var n = (snap.exists() && typeof snap.data()[field] === "number") ? snap.data()[field] : 0;
+        var el = document.getElementById(elId);
+        if (el) el.textContent = Number(n).toLocaleString();
+      }, function(){ /* read failed — leave the placeholder */ });
+    } catch(e){}
+  }
+  live(GEO,  "geo",  "visitors", "geoVisits");   // GeoProof stores its count in stats/site.visitors
+  live(PHYS, "phys", "visits",   "physVisits");  // Physica  stores its count in stats/site.visits
+</script>
+</body>
+</html>
