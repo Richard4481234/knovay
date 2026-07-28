@@ -111,6 +111,24 @@
   .feat h4{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:19px;margin-bottom:8px;color:#f0f2fb;}
   .feat p{color:var(--muted);font-size:13.7px;line-height:1.6;}
 
+  /* ---------- closer look (detailed) ---------- */
+  .deep{display:flex;flex-direction:column;gap:22px;}
+  .deep-block{position:relative;overflow:hidden;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:30px 34px;}
+  .deep-block::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;}
+  .deep-block.geo::before{background:linear-gradient(180deg,var(--geo),transparent);}
+  .deep-block.phys::before{background:linear-gradient(180deg,var(--phys),transparent);}
+  .deep-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;}
+  .deep-block.geo .deep-eyebrow{color:var(--geo);}
+  .deep-block.phys .deep-eyebrow{color:var(--phys);}
+  .deep-block h3{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:27px;letter-spacing:-.01em;margin:8px 0 14px;color:#f2f4fb;}
+  .deep-block p{color:var(--muted);font-size:15px;line-height:1.68;margin:0 0 14px;max-width:770px;}
+  .deep-block p:last-of-type{margin-bottom:0;}
+  .deep-block p b{color:#dfe4f2;font-weight:600;}
+  .audience{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line-2);}
+  .aud h4{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:9px;}
+  .aud p{font-size:13.8px;line-height:1.62;margin:0;color:var(--muted);}
+  @media(max-width:680px){.audience{grid-template-columns:1fr;gap:16px;}.deep-block{padding:26px 22px;}}
+
   /* ---------- mission strip ---------- */
   .mission{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:40px 40px;text-align:center;
     background:radial-gradient(700px 300px at 50% -40%,rgba(90,162,245,.10),transparent 70%),var(--panel);}
@@ -223,6 +241,64 @@
         </div>
         <span class="go">Open Physica →</span>
       </a>
+
+    </div>
+  </section>
+
+  <section class="sec" id="closer">
+    <div class="sec-head">
+      <h2>A closer look</h2>
+      <span class="tag">how each lab works</span>
+      <div class="rule"></div>
+    </div>
+    <div class="deep">
+
+      <div class="deep-block geo">
+        <div class="deep-eyebrow">GeoProof · Interactive Geometry</div>
+        <h3>Proofs you can grab and move</h3>
+        <p>GeoProof turns the classic results of geometry into <b>living diagrams</b>. Every explorer shows a
+           construction — a triangle, a circle, an inscribed angle, a set of tangents — where the key points are
+           draggable. Grab a vertex and move it, and the whole figure updates instantly while the theorem keeps
+           holding true: the angles of a triangle still sum to 180°, an inscribed angle stays exactly half its
+           central angle, the nine-point circle keeps passing through all nine points. Because every measurement is
+           <b>recomputed live to machine precision</b>, you're not staring at a fixed textbook drawing — you're
+           stress-testing the theorem for yourself.</p>
+        <p>The library spans <b>73 explorers</b> across triangles, circles, angles, quadrilaterals, polygons and
+           transformations — from the Pythagorean theorem to Ptolemy, Ceva, the Euler line and 3-D solids. You can
+           search and filter by shape or difficulty, save favourites, follow <b>guided paths</b> that sequence topics
+           into a lesson, and test yourself in a <b>625-question quiz</b> with retry-missed and adaptive rounds.</p>
+        <div class="audience">
+          <div class="aud"><h4>For students</h4><p>Build real intuition by experimenting instead of memorising.
+            Drag the figure until a proof finally "clicks," then check your understanding with the quiz — all free in
+            the browser, with nothing to install.</p></div>
+          <div class="aud"><h4>For teachers</h4><p>Drop a live, projector-ready demonstration into any lesson, or
+            embed an explorer straight into your notes or LMS. One tool covers a full curriculum of theorems, with a
+            quiz for practice and quick assessment.</p></div>
+        </div>
+      </div>
+
+      <div class="deep-block phys">
+        <div class="deep-eyebrow">Physica · Interactive Physics Lab</div>
+        <h3>A physics lab that runs in your browser</h3>
+        <p>Physica is a collection of <b>67 hands-on experiments</b> organised into six fields — mechanical, thermal,
+           electromagnetism, optical, modern and fluid. Open one and it behaves like a real bench: press play, then
+           <b>tune the numbers</b> — mass, launch angle, temperature, charge, wavelength — and watch the outcome unfold
+           in real time. Crucially, each simulation is driven by the <b>actual governing equations</b>, so what you see
+           is genuine physics rather than a canned animation: projectiles trace true parabolas, gas molecules reproduce
+           the Maxwell–Boltzmann speed curve, and light through two slits builds up the real interference pattern.</p>
+        <p>It reaches from everyday mechanics — projectile motion, collisions, pendulums, orbits and Kepler's laws — to
+           the invisible and the exotic: Coulomb field lines, electromagnetic waves, lenses and diffraction, the
+           photoelectric effect, the Bohr atom, special relativity and even a black hole. You can browse by field,
+           search all 67, and star the experiments you want to return to.</p>
+        <div class="audience">
+          <div class="aud"><h4>For students</h4><p>See the invisible — fields, waves and forces — made visible, and
+            safely run experiments that would be impossible or expensive in a real lab. Change one variable at a time
+            to feel how the equations actually behave.</p></div>
+          <div class="aud"><h4>For teachers</h4><p>Demonstrate any topic live in a lecture, or set the simulators as
+            at-home exploration and virtual lab work. The six fields span most of a physics syllabus, ready to use with
+            no setup or equipment.</p></div>
+        </div>
+      </div>
 
     </div>
   </section>
