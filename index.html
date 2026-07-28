@@ -423,12 +423,23 @@
       onSnapshot(doc(db, "stats", "site"), function(snap){
         var n = (snap.exists() && typeof snap.data()[field] === "number") ? snap.data()[field] : 0;
         latest[key] = n;
+        try { localStorage.setItem("kv:" + key, String(n)); } catch(e){}   // remember for an instant paint next time
         var el = document.getElementById(elId);
         if (el) el.textContent = Number(n).toLocaleString();
         paintTotal();
       }, function(){ /* read failed — leave the placeholder */ });
     } catch(e){}
   }
+  // paint the last known counts immediately so nothing shows "…" on repeat visits
+  (function(){
+    try {
+      var cg = parseInt(localStorage.getItem("kv:geo")  || "", 10);
+      var cp = parseInt(localStorage.getItem("kv:phys") || "", 10);
+      if (!isNaN(cg)) { latest.geo  = cg; var ge = document.getElementById("geoVisits");  if (ge) ge.textContent = cg.toLocaleString(); }
+      if (!isNaN(cp)) { latest.phys = cp; var pe = document.getElementById("physVisits"); if (pe) pe.textContent = cp.toLocaleString(); }
+      paintTotal();
+    } catch(e){}
+  })();
   live(geoDb,  "visitors", "geoVisits",  "geo");    // GeoProof stores its count in stats/site.visitors
   live(physDb, "visits",   "physVisits", "phys");   // Physica  stores its count in stats/site.visits
 
