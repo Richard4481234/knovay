@@ -22,6 +22,7 @@
     --ink:#eef1fb; --muted:#9aa2bd; --faint:#6b7391;
     --geo:#4f9bf5; --geo-soft:rgba(79,155,245,0.13);
     --phys:#b89bff; --phys-soft:rgba(184,155,255,0.13);
+    --calc:#5cd6b0; --calc-soft:rgba(92,214,176,0.13);
     --gold:#ffd27a;
   }
   html{scroll-behavior:smooth;}
@@ -84,15 +85,19 @@
   .card::before{content:"";position:absolute;inset:0 0 auto 0;height:2.5px;opacity:.95;}
   .card.geo::before{background:linear-gradient(90deg,var(--geo),transparent 85%);}
   .card.phys::before{background:linear-gradient(90deg,var(--phys),transparent 85%);}
+  .card.calc::before{background:linear-gradient(90deg,var(--calc),transparent 85%);}
   .card:hover{transform:translateY(-5px);}
   .card.geo:hover{border-color:rgba(79,155,245,0.5);box-shadow:0 26px 60px -30px rgba(79,155,245,0.55);}
   .card.phys:hover{border-color:rgba(184,155,255,0.5);box-shadow:0 26px 60px -30px rgba(184,155,255,0.55);}
+  .card.calc:hover{border-color:rgba(92,214,176,0.5);box-shadow:0 26px 60px -30px rgba(92,214,176,0.55);}
   .icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;border:1px solid var(--line);}
   .card.geo .icon{background:var(--geo-soft);}
   .card.phys .icon{background:var(--phys-soft);}
+  .card.calc .icon{background:var(--calc-soft);}
   .kicker{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;}
   .card.geo .kicker{color:var(--geo);}
   .card.phys .kicker{color:var(--phys);}
+  .card.calc .kicker{color:var(--calc);}
   .card h3{font-family:'Fraunces',Georgia,serif;font-weight:500;font-size:29px;letter-spacing:-0.01em;margin:8px 0 11px;}
   .card p{color:var(--muted);font-size:14.5px;line-height:1.62;flex:1;}
   .stats{display:flex;gap:22px;margin:22px 0 22px;flex-wrap:wrap;}
@@ -102,6 +107,7 @@
     padding:11px 19px;border-radius:999px;transition:gap .15s ease,filter .15s;}
   .card.geo .go{background:var(--geo);color:#08101f;}
   .card.phys .go{background:var(--phys);color:#160a26;}
+  .card.calc .go{background:var(--calc);color:#062018;}
   .card:hover .go{gap:12px;}
 
   /* ---------- features ---------- */
@@ -177,6 +183,7 @@
     <nav>
       <a class="nav-hide" href="https://geoproof.knovay.com/">GeoProof</a>
       <a class="nav-hide" href="https://physica.knovay.com/">Physica</a>
+      <a class="nav-hide" href="https://calculo.knovay.com/">Calculo</a>
       <a class="navcta" href="#labs">Explore the labs</a>
     </nav>
   </header>
@@ -185,7 +192,7 @@
     <div class="eyebrow">Educational studio</div>
     <h1>Learn by playing<br>with the <em>ideas</em>.</h1>
     <p class="lede">Knovay builds interactive tools for math and science — where you don't just read a concept,
-       you drag it, tune it, and watch it hold true. Two labs, one home.</p>
+       you drag it, tune it, and watch it hold true. Three labs, one home.</p>
     <p class="hero-meta">&#9670;&nbsp; <b id="totalVisits">&hellip;</b> visits and counting across both labs</p>
     <div class="hero-cta">
       <a class="btn btn-primary" href="https://geoproof.knovay.com/">Open GeoProof</a>
@@ -196,7 +203,7 @@
   <section class="sec" id="labs">
     <div class="sec-head">
       <h2>The labs</h2>
-      <span class="tag">two products · one platform</span>
+      <span class="tag">three products · one platform</span>
       <div class="rule"></div>
     </div>
 
@@ -240,6 +247,25 @@
           <div class="s"><b id="physVisits">&hellip;</b>visits</div>
         </div>
         <span class="go">Open Physica →</span>
+      </a>
+
+      <a class="card calc" href="https://calculo.knovay.com/">
+        <div class="icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 20 C 10 20, 11 5, 15 5 S 21 15, 22 9" stroke="#5cd6b0" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="15" cy="5" r="1.9" fill="#ffd27a"/>
+          </svg>
+        </div>
+        <div class="kicker">Interactive Calculus</div>
+        <h3>Calculo</h3>
+        <p>See calculus move. Drag a point, slide a value, and watch slope, area, limits and series unfold —
+           every lab computed live, from the derivative to differential equations.</p>
+        <div class="stats">
+          <div class="s"><b>23</b>labs</div>
+          <div class="s"><b>1</b>full course</div>
+          <div class="s"><b>new</b>·</div>
+        </div>
+        <span class="go">Open Calculo →</span>
       </a>
 
     </div>
@@ -372,11 +398,13 @@
           <h5>Products</h5>
           <a href="https://geoproof.knovay.com/">GeoProof</a>
           <a href="https://physica.knovay.com/">Physica</a>
+          <a href="https://calculo.knovay.com/">Calculo</a>
         </div>
         <div class="foot-col">
           <h5>Explore</h5>
           <a href="https://geoproof.knovay.com/quiz.html">GeoProof quiz</a>
           <a href="https://physica.knovay.com/experiments.html">All experiments</a>
+          <a href="https://calculo.knovay.com/">Calculus labs</a>
         </div>
         <div class="foot-col">
           <h5>Contact</h5>
