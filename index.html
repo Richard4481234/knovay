@@ -193,7 +193,7 @@
     <h1>Learn by playing<br>with the <em>ideas</em>.</h1>
     <p class="lede">Knovay builds interactive tools for math and science — where you don't just read a concept,
        you drag it, tune it, and watch it hold true. Three labs, one home.</p>
-    <p class="hero-meta">&#9670;&nbsp; <b id="totalVisits">&hellip;</b> visits and counting across both labs</p>
+    <p class="hero-meta">&#9670;&nbsp; <b id="totalVisits">&hellip;</b> visits and counting across the labs</p>
     <div class="hero-cta">
       <a class="btn btn-primary" href="https://geoproof.knovay.com/">Open GeoProof</a>
       <a class="btn btn-ghost" href="https://physica.knovay.com/">Open Physica</a>
@@ -263,7 +263,7 @@
         <div class="stats">
           <div class="s"><b>23</b>labs</div>
           <div class="s"><b>1</b>full course</div>
-          <div class="s"><b>new</b>·</div>
+          <div class="s"><b id="calcVisits">&hellip;</b>visits</div>
         </div>
         <span class="go">Open Calculo →</span>
       </a>
@@ -414,7 +414,7 @@
     </div>
     <div class="foot-bottom">
       <span>&copy; 2026 Knovay · An independent educational studio.</span>
-      <span class="mono">GeoProof · Physica</span>
+      <span class="mono">GeoProof · Physica · Calculo</span>
     </div>
   </footer>
 
@@ -438,12 +438,12 @@
   var physDb = getFirestore(initializeApp(PHYS, "phys"));
 
   // ---- live visit counts (read-only) ----
-  var latest = { geo:null, phys:null };
+  var latest = { geo:null, phys:null, calc:null };
   function paintTotal(){
     var el = document.getElementById("totalVisits");
     if (!el) return;
-    if (latest.geo === null && latest.phys === null) return;   // nothing loaded yet
-    var t = (latest.geo || 0) + (latest.phys || 0);
+    if (latest.geo === null && latest.phys === null && latest.calc === null) return;   // nothing loaded yet
+    var t = (latest.geo || 0) + (latest.phys || 0) + (latest.calc || 0);
     el.textContent = Number(t).toLocaleString();
   }
   function live(db, field, elId, key){
@@ -463,13 +463,16 @@
     try {
       var cg = parseInt(localStorage.getItem("kv:geo")  || "", 10);
       var cp = parseInt(localStorage.getItem("kv:phys") || "", 10);
+      var cc = parseInt(localStorage.getItem("kv:calc") || "", 10);
       if (!isNaN(cg)) { latest.geo  = cg; var ge = document.getElementById("geoVisits");  if (ge) ge.textContent = cg.toLocaleString(); }
       if (!isNaN(cp)) { latest.phys = cp; var pe = document.getElementById("physVisits"); if (pe) pe.textContent = cp.toLocaleString(); }
+      if (!isNaN(cc)) { latest.calc = cc; var ce = document.getElementById("calcVisits"); if (ce) ce.textContent = cc.toLocaleString(); }
       paintTotal();
     } catch(e){}
   })();
   live(geoDb,  "visitors", "geoVisits",  "geo");    // GeoProof stores its count in stats/site.visitors
   live(physDb, "visits",   "physVisits", "phys");   // Physica  stores its count in stats/site.visits
+  live(geoDb,  "calculoVisits", "calcVisits", "calc");  // Calculo reuses geoproof-a2db0, its own field stats/site.calculoVisits
 
   // ---- issue reports submit straight to Firestore — no email app ----
   // The Report-an-issue widget calls this; the report is written to
