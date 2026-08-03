@@ -189,6 +189,7 @@
       <a class="nav-hide" href="https://geoproof.knovay.com/">GeoProof</a>
       <a class="nav-hide" href="https://physica.knovay.com/">Physica</a>
       <a class="nav-hide" href="https://calculo.knovay.com/">Calculo</a>
+      <a class="nav-hide" href="dashboard.html">Stats</a>
       <a class="navcta" href="#labs">Explore the labs</a>
     </nav>
   </header>
@@ -198,7 +199,6 @@
     <h1>Learn by playing<br>with the <em>ideas</em>.</h1>
     <p class="lede">Knovay builds interactive tools for math and science — where you don't just read a concept,
        you drag it, tune it, and watch it hold true. Three labs, one home.</p>
-    <p class="hero-meta">&#9670;&nbsp; <b id="totalVisits">&hellip;</b> visits and counting across the labs</p>
     <div class="hero-cta">
       <a class="btn btn-primary" href="https://geoproof.knovay.com/">Open GeoProof</a>
       <a class="btn btn-ghost" href="https://physica.knovay.com/">Open Physica</a>
@@ -228,7 +228,6 @@
         <div class="stats">
           <div class="s"><b>73</b>explorers</div>
           <div class="s"><b>625</b>quiz questions</div>
-          <div class="s"><b id="geoVisits">&hellip;</b>visits</div>
         </div>
         <span class="go">Open GeoProof →</span>
       </a>
@@ -249,7 +248,6 @@
         <div class="stats">
           <div class="s"><b>6</b>fields</div>
           <div class="s"><b>67</b>experiments</div>
-          <div class="s"><b id="physVisits">&hellip;</b>visits</div>
         </div>
         <span class="go">Open Physica →</span>
       </a>
@@ -268,7 +266,6 @@
         <div class="stats">
           <div class="s"><b>23</b>labs</div>
           <div class="s"><b>1</b>full course</div>
-          <div class="s"><b id="calcVisits">&hellip;</b>visits</div>
         </div>
         <span class="go">Open Calculo →</span>
       </a>
@@ -464,44 +461,6 @@
     messagingSenderId:"335856818743", appId:"1:335856818743:web:6979546a0e3cbb60aabdb2" };
 
   var geoDb  = getFirestore(initializeApp(GEO,  "geo"));
-  var physDb = getFirestore(initializeApp(PHYS, "phys"));
-
-  // ---- live visit counts (read-only) ----
-  var latest = { geo:null, phys:null, calc:null };
-  function paintTotal(){
-    var el = document.getElementById("totalVisits");
-    if (!el) return;
-    if (latest.geo === null && latest.phys === null && latest.calc === null) return;   // nothing loaded yet
-    var t = (latest.geo || 0) + (latest.phys || 0) + (latest.calc || 0);
-    el.textContent = Number(t).toLocaleString();
-  }
-  function live(db, field, elId, key){
-    try {
-      onSnapshot(doc(db, "stats", "site"), function(snap){
-        var n = (snap.exists() && typeof snap.data()[field] === "number") ? snap.data()[field] : 0;
-        latest[key] = n;
-        try { localStorage.setItem("kv:" + key, String(n)); } catch(e){}   // remember for an instant paint next time
-        var el = document.getElementById(elId);
-        if (el) el.textContent = Number(n).toLocaleString();
-        paintTotal();
-      }, function(){ /* read failed — leave the placeholder */ });
-    } catch(e){}
-  }
-  // paint the last known counts immediately so nothing shows "…" on repeat visits
-  (function(){
-    try {
-      var cg = parseInt(localStorage.getItem("kv:geo")  || "", 10);
-      var cp = parseInt(localStorage.getItem("kv:phys") || "", 10);
-      var cc = parseInt(localStorage.getItem("kv:calc") || "", 10);
-      if (!isNaN(cg)) { latest.geo  = cg; var ge = document.getElementById("geoVisits");  if (ge) ge.textContent = cg.toLocaleString(); }
-      if (!isNaN(cp)) { latest.phys = cp; var pe = document.getElementById("physVisits"); if (pe) pe.textContent = cp.toLocaleString(); }
-      if (!isNaN(cc)) { latest.calc = cc; var ce = document.getElementById("calcVisits"); if (ce) ce.textContent = cc.toLocaleString(); }
-      paintTotal();
-    } catch(e){}
-  })();
-  live(geoDb,  "visitors", "geoVisits",  "geo");    // GeoProof stores its count in stats/site.visitors
-  live(physDb, "visits",   "physVisits", "phys");   // Physica  stores its count in stats/site.visits
-  live(geoDb,  "calculoVisits", "calcVisits", "calc");  // Calculo reuses geoproof-a2db0, its own field stats/site.calculoVisits
 
   // ---- issue reports submit straight to Firestore — no email app ----
   // The Report-an-issue widget calls this; the report is written to
