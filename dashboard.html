@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knovay — Visits Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#e7ecef;--card:#fff;--line:#d3dade;--ink:#1b2430;--muted:#5c6672;--faint:#8a92a0;
+    --geo:#1f6fb2;--phys:#6c46d6;--calc:#0e9c74;--total:#1b2430;}
+  *{box-sizing:border-box}html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;
+    min-height:100vh;padding:40px 20px 60px}
+  .wrap{max-width:900px;margin:0 auto}
+  h1{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:30px;margin:0 0 4px;letter-spacing:-.01em}
+  .sub{color:var(--muted);font-size:14.5px;margin:0 0 26px}
+  .sub .live{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--calc);display:inline-block;
+    box-shadow:0 0 0 0 rgba(14,156,116,.5);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(14,156,116,.45)}70%{box-shadow:0 0 0 8px rgba(14,156,116,0)}100%{box-shadow:0 0 0 0 rgba(14,156,116,0)}}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:720px){.grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:480px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px;
+    border-top:4px solid var(--c,#888);text-decoration:none;color:inherit;display:block;transition:.15s}
+  .card:hover{transform:translateY(-2px);box-shadow:0 12px 30px -18px rgba(20,30,45,.4)}
+  .card .name{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .card .num{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:46px;line-height:1.05;margin:8px 0 2px;color:var(--c,var(--ink))}
+  .card .lbl{color:var(--muted);font-size:13px}
+  .card .go{margin-top:12px;font-size:12.5px;color:var(--c,var(--ink));font-weight:600}
+  .total{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 24px;display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .total .t-lbl{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .total .t-num{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:54px;line-height:1;color:var(--ink)}
+  .foot{margin-top:22px;color:var(--faint);font-size:12.5px;font-family:'JetBrains Mono',monospace}
+  .err{color:#b03a1a}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Knovay — Visits Dashboard</h1>
+  <p class="sub"><span class="live"><span class="dot"></span> Live from Firebase — updates in real time.</span></p>
+
+  <div class="grid">
+    <a class="card" style="--c:var(--geo)" href="https://geoproof.knovay.com/" target="_blank" rel="noopener">
+      <div class="name">GeoProof</div><div class="num" id="geo">…</div><div class="lbl">geometry · visits</div>
+      <div class="go">geoproof.knovay.com →</div>
+    </a>
+    <a class="card" style="--c:var(--phys)" href="https://physica.knovay.com/" target="_blank" rel="noopener">
+      <div class="name">Physica</div><div class="num" id="phys">…</div><div class="lbl">physics · visits</div>
+      <div class="go">physica.knovay.com →</div>
+    </a>
+    <a class="card" style="--c:var(--calc)" href="https://calculo.knovay.com/" target="_blank" rel="noopener">
+      <div class="name">Calculo</div><div class="num" id="calc">…</div><div class="lbl">calculus · visits</div>
+      <div class="go">calculo.knovay.com →</div>
+    </a>
+  </div>
+
+  <div class="total">
+    <span class="t-lbl">Total across all Knovay labs</span>
+    <span class="t-num" id="total">…</span>
+  </div>
+
+  <p class="foot" id="foot">Connecting…</p>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const GEO = { apiKey:"AIzaSyB2YooHATeNcu_3lYzL7vOjTwpDDlP6I1U", authDomain:"geoproof-a2db0.firebaseapp.com",
+    projectId:"geoproof-a2db0", storageBucket:"geoproof-a2db0.firebasestorage.app",
+    messagingSenderId:"504119803431", appId:"1:504119803431:web:87f82a578f16367801d802" };
+  const PHYS = { apiKey:"AIzaSyDqdhi8AAnjNyOR0sWkdr5_fC1_wmy4F-o", authDomain:"physica-69f62.firebaseapp.com",
+    projectId:"physica-69f62", storageBucket:"physica-69f62.firebasestorage.app",
+    messagingSenderId:"335856818743", appId:"1:335856818743:web:6979546a0e3cbb60aabdb2" };
+
+  const geoDb  = getFirestore(initializeApp(GEO,  "dashGeo"));
+  const physDb = getFirestore(initializeApp(PHYS, "dashPhys"));
+
+  const latest = { geo:null, phys:null, calc:null };
+  const fmt = n => Number(n).toLocaleString();
+  function paintTotal(){
+    if (latest.geo===null && latest.phys===null && latest.calc===null) return;
+    document.getElementById('total').textContent = fmt((latest.geo||0)+(latest.phys||0)+(latest.calc||0));
+  }
+  function stamp(){ document.getElementById('foot').textContent = 'Last updated ' + new Date().toLocaleTimeString() + ' · live'; }
+  function live(db, field, elId, key){
+    onSnapshot(doc(db,"stats","site"), snap => {
+      const n = (snap.exists() && typeof snap.data()[field]==='number') ? snap.data()[field] : 0;
+      latest[key]=n; document.getElementById(elId).textContent = fmt(n); paintTotal(); stamp();
+    }, err => { document.getElementById(elId).textContent='—'; document.getElementById('foot').innerHTML='<span class="err">Could not reach Firebase.</span>'; });
+  }
+  live(geoDb,  "visitors",      "geo",  "geo");
+  live(physDb, "visits",        "phys", "phys");
+  live(geoDb,  "calculoVisits", "calc", "calc");
+</script>
+</body>
+</html>
