@@ -190,6 +190,7 @@
       <a class="nav-hide" href="https://physica.knovay.com/">Physica</a>
       <a class="nav-hide" href="https://calculo.knovay.com/">Calculo</a>
       <a class="nav-hide" href="dashboard.html">Stats</a>
+      <a class="nav-hide" href="#feedback">Feedback</a>
       <a class="navcta" href="#labs">Explore the labs</a>
     </nav>
   </header>
@@ -406,6 +407,79 @@
     </div>
   </section>
 
+  <section class="sec" id="feedback">
+    <div class="sec-head">
+      <h2>Your feedback</h2>
+      <span class="tag">help shape Knovay</span>
+      <div class="rule"></div>
+    </div>
+
+    <style>
+      .kvs-wrap{max-width:620px;margin:6px auto 0}
+      .kvs-intro{color:#4b5563;font-size:15.5px;line-height:1.6;margin:0 0 22px}
+      .kvs-card{background:#fff;border:1px solid #e4e7ec;border-radius:16px;padding:26px 26px 24px;
+        box-shadow:0 10px 30px -22px rgba(20,30,50,.5)}
+      .kvs-q{font-weight:700;color:#1b2430;font-size:16px;margin:0 0 12px}
+      .kvs-rate{display:flex;gap:10px;flex-wrap:wrap}
+      .kvs-rate button{width:52px;height:52px;border:1.5px solid #d6dae1;background:#fff;border-radius:12px;
+        font-size:19px;font-weight:700;color:#5b6472;cursor:pointer;transition:.14s;font-family:inherit}
+      .kvs-rate button:hover{border-color:#9fb0e8;color:#2f3a4a}
+      .kvs-rate button.on{background:#4a63c9;border-color:#4a63c9;color:#fff;box-shadow:0 6px 16px -8px rgba(74,99,201,.8)}
+      .kvs-scale{display:flex;justify-content:space-between;font-size:12.5px;color:#8a92a0;margin:8px 2px 20px}
+      .kvs-card label{display:block;font-size:13px;font-weight:600;color:#55606e;margin:0 0 7px}
+      .kvs-card textarea,.kvs-card input{width:100%;box-sizing:border-box;border:1px solid #d6dae1;border-radius:11px;
+        padding:12px 13px;font:400 15px/1.5 inherit;color:#1b2430;background:#fff;outline:none;transition:.14s}
+      .kvs-card textarea{min-height:110px;resize:vertical}
+      .kvs-card textarea:focus,.kvs-card input:focus{border-color:#4a63c9;box-shadow:0 0 0 3px rgba(74,99,201,.14)}
+      .kvs-row{margin:0 0 16px}
+      .kvs-submit{width:100%;margin-top:4px;background:#4a63c9;color:#fff;font-weight:700;font-size:15.5px;
+        padding:14px;border:0;border-radius:12px;cursor:pointer;transition:.15s;font-family:inherit}
+      .kvs-submit:hover{background:#3a51ad}
+      .kvs-submit:disabled{opacity:.6;cursor:default}
+      .kvs-note{margin-top:14px;font-size:14px;line-height:1.5;border-radius:10px;padding:11px 13px;display:none}
+      .kvs-note.ok{display:block;background:#e9f7ef;border:1px solid #bfe6cf;color:#13794a}
+      .kvs-note.err{display:block;background:#fdecea;border:1px solid #f5c2bc;color:#a8341a}
+      .kvs-thanks{display:none;text-align:center;padding:14px 4px}
+      .kvs-thanks h4{font-size:20px;color:#1b2430;margin:0 0 6px}
+      .kvs-thanks p{color:#55606e;margin:0}
+    </style>
+
+    <div class="kvs-wrap">
+      <p class="kvs-intro">Has Knovay helped with your studies? Tell me how it's going — your rating and notes
+        go straight to the person who builds these labs, and they genuinely shape what gets built next.</p>
+
+      <div class="kvs-card">
+        <form id="kvs-form" autocomplete="on">
+          <div class="kvs-q">How much has Knovay helped your studies?</div>
+          <div class="kvs-rate" id="kvs-rate" role="radiogroup" aria-label="Helpfulness rating">
+            <button type="button" data-v="1" role="radio" aria-checked="false" aria-label="1 out of 5">1</button>
+            <button type="button" data-v="2" role="radio" aria-checked="false" aria-label="2 out of 5">2</button>
+            <button type="button" data-v="3" role="radio" aria-checked="false" aria-label="3 out of 5">3</button>
+            <button type="button" data-v="4" role="radio" aria-checked="false" aria-label="4 out of 5">4</button>
+            <button type="button" data-v="5" role="radio" aria-checked="false" aria-label="5 out of 5">5</button>
+          </div>
+          <div class="kvs-scale"><span>Not much</span><span>A huge amount</span></div>
+
+          <div class="kvs-row">
+            <label for="kvs-msg">Anything you'd like to tell me? <span style="font-weight:400;color:#8a92a0">(what helped, what to improve)</span></label>
+            <textarea id="kvs-msg" placeholder="Your thoughts…"></textarea>
+          </div>
+          <div class="kvs-row">
+            <label for="kvs-email">Email <span style="font-weight:400;color:#8a92a0">(optional — only if you'd like a reply)</span></label>
+            <input id="kvs-email" type="email" autocomplete="email" placeholder="you@example.com">
+          </div>
+
+          <button class="kvs-submit" id="kvs-submit" type="submit">Send feedback</button>
+          <div class="kvs-note" id="kvs-note"></div>
+        </form>
+        <div class="kvs-thanks" id="kvs-thanks">
+          <h4>Thank you! 🙏</h4>
+          <p>Your feedback has been sent — I read every one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <footer class="site">
     <div class="foot-grid">
       <div class="foot-brand">
@@ -477,6 +551,56 @@
       createdAt: serverTimestamp()
     });
   };
+
+  // ---- study survey submits to geoproof-a2db0 / survey ----
+  // You read these on the private responses.html page (owner sign-in only).
+  window.knovaySurvey = function(payload){
+    payload = payload || {};
+    return addDoc(collection(geoDb, "survey"), {
+      rating:  Number(payload.rating) || 0,
+      message: String(payload.message || ""),
+      email:   String(payload.email   || ""),
+      ua:      String(payload.ua      || ""),
+      createdAt: serverTimestamp()
+    });
+  };
+
+  // ---- wire the survey form ----
+  (function(){
+    var form = document.getElementById("kvs-form");
+    if (!form) return;
+    var rateWrap = document.getElementById("kvs-rate");
+    var note = document.getElementById("kvs-note");
+    var submit = document.getElementById("kvs-submit");
+    var thanks = document.getElementById("kvs-thanks");
+    var rating = 0;
+    rateWrap.addEventListener("click", function(e){
+      var b = e.target.closest("button[data-v]"); if(!b) return;
+      rating = parseInt(b.getAttribute("data-v"), 10);
+      Array.prototype.forEach.call(rateWrap.querySelectorAll("button"), function(x){
+        var on = x === b; x.classList.toggle("on", on); x.setAttribute("aria-checked", on ? "true" : "false");
+      });
+      note.className = "kvs-note";
+    });
+    function show(kind, text){ note.className = "kvs-note " + kind; note.textContent = text; }
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      if (!rating){ show("err", "Please pick a rating from 1 to 5 first."); return; }
+      submit.disabled = true; submit.textContent = "Sending…";
+      window.knovaySurvey({
+        rating: rating,
+        message: document.getElementById("kvs-msg").value.trim(),
+        email: document.getElementById("kvs-email").value.trim(),
+        ua: navigator.userAgent
+      }).then(function(){
+        form.style.display = "none"; thanks.style.display = "block";
+      }).catch(function(err){
+        submit.disabled = false; submit.textContent = "Send feedback";
+        show("err", "Sorry — that didn't send. Please try again in a moment.");
+        console.warn("[knovay] survey submit:", err && (err.code || err.message));
+      });
+    });
+  })();
 </script>
 
 <!-- "Report an issue" button — floating; opens a comment box that submits straight to Firestore (no email app). -->
